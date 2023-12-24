@@ -11,7 +11,7 @@ void Skydome::Initialize(Model* model)
 	
 	workdtransform_.Initialize();
 
-	workdtransform_.scale_ = {1.0f, 1.0f, 1.0f};
+	workdtransform_.scale_ = {10.0f, 10.0f, 10.0f};
 
 
 }

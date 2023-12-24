@@ -12,7 +12,7 @@ void RailCamera::Initialize() {
 
 	viewProjection_.farZ = 3000.0f;
 
-	worldTransform_.translation_.y = 15.0f;
+	worldTransform_.translation_.y = 40.0f;
 
 }
 
