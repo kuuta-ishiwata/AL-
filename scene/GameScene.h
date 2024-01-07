@@ -15,7 +15,7 @@
 #include "Ground.h"
 #include "Player.h"
 #include "MATHEX.h"
-
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -47,6 +47,18 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	
+	// 敵発生関数
+	/// </summary>
+	void EnemyPop(Vector3 pos);
+	void LoadEnemyPopData();
+	void UpdateEnemyPopCommands();
+	Vector3 GetEnemyPopPos() { return enemyPopPos; }
+	void SetEnemyPopPos(Vector3 pos) { enemyPopPos = pos; }
+
+	// 衝突判定
+	void CheckAllCollisions();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -88,4 +100,27 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterHead_;
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
+
+
+	// 敵キャラ
+	std::list<std::unique_ptr<Enemy>> enemies;
+	//  エネミーモデルデータ
+	std::unique_ptr<Model> modelEnemy_;
+	// エネミーモデル
+	std::unique_ptr<Model> enemyFighterBody_;
+	std::unique_ptr<Model> enemyFighterHead_;
+	std::unique_ptr<Model> enemyFighterL_arm_;
+	std::unique_ptr<Model> enemyFighterR_arm_;
+	//武器モデル
+	std::unique_ptr<Model> modelWeapon_;
+
+	bool isWait = true;
+
+	// 待機タイマ
+	int32_t waitTimer = 0;
+	std::stringstream enemyPopCommands;
+	Vector3 enemyPopPos = {};
+
+	
+
 };

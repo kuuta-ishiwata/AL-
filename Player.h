@@ -35,11 +35,32 @@ public:
 
 	// 浮遊ギミックの媒介変数
 	float floatingParameter_ = 0.0f;
+	// 通常行動初期化
+	void BehaviorRootInitialize();
+	// 通常行動更新
+	void BehaviorRootUpdate();
 
 
+	// 攻撃行動初期化
+	void BehaviorAttackInitialize();
+	// 攻撃行動更新
+	void BehaviorAttackUpdate();
+
+	// 振る舞い
+	enum class Behavior {
+		kRoot,  // 通常攻撃
+		kAttack // 攻撃中
+	};
+
+	// 振る舞い
+	Behavior behavior_ = Behavior::kRoot;
+
+	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 
 private:
 
+	// 武器モデル
+	WorldTransform worldTransformWeapon_;
 
     WorldTransform worldTransformBase_;
 	WorldTransform worldTransformBody_;
@@ -60,7 +81,8 @@ private:
 
 	// カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
-
+	// 攻撃フレーム
+	int attackFrame;
 
 
 };
