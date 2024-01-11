@@ -29,7 +29,7 @@ void GameClear::Update()
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoystickState(0, joyState))
 	{
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) 
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y) 
 		{
 
 			isSceneEnd = true;
