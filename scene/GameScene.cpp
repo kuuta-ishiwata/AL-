@@ -31,8 +31,8 @@ void GameScene::CheckAllCollisions()
 				if (posA.x + 1.0f >= posB.x && posA.x <= posB.x + 1.0f)
 				{
 
-					player_->OnCollision();
 					count += 1;
+
 				}
 			}
 		}
@@ -196,9 +196,10 @@ void GameScene::Update() {
 	if (count == 1) {
 	
 		isSceneEnd = true;
-
+		player_->OnCollision();
 	}
 	
+
 	if (count2 >= 3000) {
 	
 		isSceneEnd2 = true;

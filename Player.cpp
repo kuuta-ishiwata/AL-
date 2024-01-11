@@ -298,6 +298,7 @@ void Player::BehaviorJumpUpdate()
 
 
 	XINPUT_STATE joyState;
+
 	Vector3 accelerationVector = {};
 	const float kGravityAcceleraration = -0.05f;
 
@@ -316,8 +317,6 @@ void Player::BehaviorJumpUpdate()
 
 			}
 			
-		
-		
 		}
 
 
@@ -336,6 +335,10 @@ void Player::BehaviorJumpUpdate()
 			behaviorRequest_ = Behavior::kRoot;
 		}
 	}	  
+	
+	worldTransformL_arm_.rotation_.x = std::sin(floatingParameter_) * -0.75f;
+	worldTransformR_arm_.rotation_.x = std::sin(floatingParameter_) * 0.75f;
+
 
 
 }

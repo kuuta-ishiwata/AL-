@@ -28,7 +28,7 @@ void Title::Update() {
 	XINPUT_STATE joyState;
 	// ゲームパッド状態取得
 	if (Input::GetInstance()->GetJoystickState(0, joyState))
-		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 			{
 				isSceneEnd = true;
 		}

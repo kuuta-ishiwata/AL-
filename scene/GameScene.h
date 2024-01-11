@@ -169,6 +169,9 @@ private:
 
 	uint32_t count = 0;
 	uint32_t count2 = 0;
+	uint32_t count3 = 0;
+	uint32_t count4 = 0;
+
 
 	Enemy* enemy_ = nullptr;
 
