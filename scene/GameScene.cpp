@@ -26,9 +26,9 @@ void GameScene::CheckAllCollisions()
 	for (std::unique_ptr<Enemy>& enemy : enemies)
 	{
 		posB = enemy->GetWorldPosition();
-		if (posA.z + 1.0f >= posB.z && posA.z <= posB.z + 1.0f) {
-			if (posA.y + 1.0f >= posB.y && posA.y <= posB.y + 1.0f) {
-				if (posA.x + 1.0f >= posB.x && posA.x <= posB.x + 1.0f)
+		if (posA.z + 2.0f >= posB.z && posA.z <= posB.z + 2.0f) {
+			if (posA.y +2.0f >= posB.y && posA.y <= posB.y + 2.0f) {
+				if (posA.x + 2.0f >= posB.x && posA.x <= posB.x + 2.0f)
 				{
 
 					count += 1;
