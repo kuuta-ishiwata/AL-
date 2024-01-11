@@ -66,28 +66,28 @@ public: // メンバ関数
 	// 衝突判定
 	void CheckAllCollisions();
 
-	//void Restart();
-	//
-	//void Reset();
-	//void Reset2();
-	//bool IsSceneEnd() { return isSceneEnd; }
-	//bool IsSceneEnd2() { return isSceneEnd2; }
-	//
-	//SceneType NextScene() {
-	//
-	//	// ゲームクリアとゲームオーバーどっちかに行く可能性があるので
-	//	// if文で戻り値を変える
-	//
-	//	if (isSceneEnd == true) {
-	//
-	//		return SceneType::kGameOver;
-	//	}
-	//
-	//	if (isSceneEnd2 == true) {
-	//
-	//		return SceneType::kGameClear;
-	//	}
-	//}
+	  void Restart();
+	  
+	  void Reset();
+	  void Reset2();
+	  bool IsSceneEnd() { return isSceneEnd; }
+	  bool IsSceneEnd2() { return isSceneEnd2; }
+	  
+	  SceneType NextScene() {
+	  
+	  	// ゲームクリアとゲームオーバーどっちかに行く可能性があるので
+	  	// if文で戻り値を変える
+	  
+	  	if (isSceneEnd == true) {
+	  
+	  		return SceneType::kGameOver;
+	  	}
+	  
+	  	if (isSceneEnd2 == true) {
+	  
+	  		return SceneType::kGameClear;
+	  	}
+	  }
 
 	
 private: 

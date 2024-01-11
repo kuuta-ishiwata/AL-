@@ -6,7 +6,9 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
-
+#include "Title.h"
+#include "GameClear.h"
+#include "GameOver.h"
 
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -60,23 +62,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 
 
+
+
+
 	// タイトルシーンの初期化
-	//Title* titleScene = new Title();
-	//titleScene->Initialize();
-	//
-	//SceneType sceneNo = SceneType::kTitle;
-	//
+	Title* titleScene = new Title();
+	titleScene->Initialize();
+
+
+	SceneType sceneNo = SceneType::kTitle;
+	
 	//// ゲームシーンの初期化
 	 gameScene = new GameScene();
 	 gameScene->Initialize();
-	//
-	//
-	//
-	//GameOver* gameoverScene = new GameOver();
-	//gameoverScene->Initialize();
-	//
-	//GameClear* gameClear = new GameClear();
-	//gameClear->Initialize();
+	
+
+	GameOver* gameoverScene = new GameOver();
+	gameoverScene->Initialize();
+	
+	GameClear* gameClear = new GameClear();
+	gameClear->Initialize();
 
 
 	// メインループ
@@ -92,7 +97,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		input->Update();
 		// ゲームシーンの毎フレーム処理
 		gameScene->Update();
-		/*
+		
 		switch (sceneNo) {
 		case SceneType::kTitle:
 			titleScene->Update();
@@ -145,7 +150,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 			break;
 		}
-		*/
+		
 
 		// 軸表示の更新
 		axisIndicator->Update();
@@ -156,9 +161,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		dxCommon->PreDraw();
 
 		// ゲームシーンの描画
-		gameScene->Draw();
+		//gameScene->Draw();
 
-		/*
+		
 		switch (sceneNo) {
 		case SceneType::kTitle:
 			titleScene->Draw();
@@ -178,7 +183,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		}
-		*/
+		
 
 		// 軸表示の描画
 		axisIndicator->Draw();

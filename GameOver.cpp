@@ -26,9 +26,12 @@ void GameOver::Initialize() {
 
 void GameOver::Update() {
 
-	if (input_->TriggerKey(DIK_SPACE)) 
-	{
-		isSceneEnd = true;
+	XINPUT_STATE joyState;
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B)
+		{
+			isSceneEnd = true;
+		}
 	}
 }
 

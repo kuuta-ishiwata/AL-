@@ -84,27 +84,13 @@ void GameScene::Initialize() {
 
 	
 
-	//enemy_ = new Enemy();
-	//
-	//enemy_->SetGameScene(this);
-	//
-	//enemy_->SetPlayer(player);
-
 
 	// 敵のモデル
 	enemyFighterBody_.reset(Model::CreateFromOBJ("needle_Body", true));
 	enemyFighterL_arm_.reset(Model::CreateFromOBJ("needle_L_arm", true));
 	enemyFighterR_arm_.reset(Model::CreateFromOBJ("needle_R_arm", true));
 
-	// 敵のモデル
-	//std::vector<Model*> enemyModels = {
-	//    enemyFighterBody_.get(), enemyFighterL_arm_.get(), enemyFighterR_arm_.get()};
-	//
-	//// 敵の生成
-	//enemies = std::make_unique<Enemy>();
-	//
-	//// 敵の初期化
-	//enemies->Initialize(enemyModels);
+	
 
 	LoadEnemyPopData();
 
@@ -168,9 +154,9 @@ void GameScene::Update() {
 
 		viewProjection_.matView = followCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
-
-		// viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+// viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		// viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		
 
 		// ビュープロジェクション行列の更新と転送
 		viewProjection_.TransferMatrix();
@@ -205,15 +191,19 @@ void GameScene::Update() {
 
 	worldTransform_.UpdateMatrix();
 
-	//if (count == 1) {
-	//
-	//	isSceneEnd = true;
-	//}
-	//
-	//if (count2 >= 11) {
-	//
-	//	isSceneEnd2 = true;
-	//}
+	count2++;
+
+	if (count == 1) {
+	
+		isSceneEnd = true;
+
+	}
+	
+	if (count2 >= 3000) {
+	
+		isSceneEnd2 = true;
+		count2 = 0;
+	}
 
 
 }
@@ -279,19 +269,26 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-/*
-void GameScene::Reset() {
+
+void GameScene::Reset()
+{
 
 	isSceneEnd = false;
 
 	count2 = 0;
 
+	std::vector<Model*> playerModels = {
+	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
+	    modelFighterR_arm_.get()};
 
-	//player_->Initialize(const std::vector<Model*>& models);
+	player_->Initialize(playerModels);
+	
 
-	// if (isSceneEnd) {
-	//	return;
-	// }
+	player_->OnCollision2();
+	
+	 if (isSceneEnd) {
+		return;
+	 }
 
 	enemies.clear();
 	
@@ -310,7 +307,7 @@ void GameScene::Reset2() {
 }
 
 void GameScene::Restart() {}
-*/
+
 
 
 void GameScene::LoadEnemyPopData()

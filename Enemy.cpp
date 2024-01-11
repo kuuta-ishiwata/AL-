@@ -55,11 +55,12 @@ void Enemy::Update() {
 	assert(player_);
 	
 	  //enemy速さ
+	
 	 const float kSpeed = 0.25f;
 	 
 	 Vector3 velocity{kSpeed, kSpeed, kSpeed};
 	 
-	 //Matrix4x4 rotateMatrix = MakeRotateMatrix(worldTransformBase_.rotation_);
+	 Matrix4x4 rotateMatrix = MakeRotateMatrix(worldTransformBase_.rotation_);
 	 Vector3 playerpos = player_->GetWorldPosition();
 	 
          
@@ -82,6 +83,8 @@ void Enemy::Update() {
 	 
 	 };
 	 worldTransformBase_.translation_ = Add(worldTransformBase_.translation_, velocity);
+
+	 
 	// 行列を定数バッファに転送
 	worldTransformBase_.UpdateMatrix();
 	worldTransformBody_.UpdateMatrix();

@@ -24,11 +24,16 @@ void GameClear::Initialize() {
 
 }
 
-void GameClear::Update() {
-
-	if (input_->TriggerKey(DIK_SPACE))
+void GameClear::Update() 
+{
+	XINPUT_STATE joyState;
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
 	{
-		isSceneEnd = true;
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) 
+		{
+
+			isSceneEnd = true;
+		}
 	}
 }
 

@@ -42,7 +42,7 @@ void Player::Initialize(const std::vector<Model*>& playermodels)
 
 	// X,Y,Z方向のスケーリングを設定
 	//worldTransformBase_.scale_ = {1.0f, 1.0f, 1.0f};
-	worldTransformBase_.translation_ = {0.0f, 0.0f, -4.0f};
+	worldTransformBase_.translation_ = {30.0f, 0.0f, -10.0f};
 
 	#pragma region モデルの設定
 
@@ -59,7 +59,7 @@ void Player::Initialize(const std::vector<Model*>& playermodels)
 
 	BehaviorRootInitialize();
 
-
+	BehaviorJumpInitialize();
 
 }
 
@@ -83,7 +83,7 @@ void Player::Update() {
 	// ゲームパッド状態取得
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		// キャラクターの移動速さ
-		const float speed = 0.3f;
+		const float speed = 0.2f;
 		// 移動量
 		Vector3 move = {
 		    (float)joyState.Gamepad.sThumbLX / SHRT_MAX * speed, 0.0f,
@@ -103,12 +103,59 @@ void Player::Update() {
 
 		// playerのY軸周り角度(θy)
 		worldTransformBase_.rotation_.y = std::atan2(move.x, move.z);
+
+
+     
 	}
+	
+
+	if(behaviorRequest_) {
+
+		// 振る舞いを変更する
+		behavior_ = behaviorRequest_.value();
+
+		// 各振る舞いごとの初期化を実行
+
+		// リクエストがあったら初期化と次の行動に以降
+		switch (behavior_) {
+		case Player::Behavior::kRoot:
+			// 通常行動
+			BehaviorRootInitialize();
+
+			break;
+
+		case Player::Behavior::jump:
+			// ジャンプ
+			BehaviorJumpInitialize();
+
+			break;
+		}
+
+		// 振る舞いをリセット
+		behaviorRequest_ = std::nullopt;
+
+	}
+
+	// Behaviorの更新処理
+	switch (behavior_) {
+	case Behavior::kRoot:
+
+		BehaviorRootUpdate();
+
+		break;
+
+	case Behavior::jump:
+
+		BehaviorJumpUpdate();
+
+		break;
+	}
+
 
 
 	BaseCharacter::Update();
 
-//	UpdateFloatingGimmick();
+	UpdateFloatingGimmick();
 
 	// 行列を定数バッファに転送
 	worldTransformBody_.UpdateMatrix();
@@ -119,30 +166,9 @@ void Player::Update() {
 	//worldTransformWeapon_.UpdateMatrix();
 
 
-	BehaviorJumpUpdate();
+	//BehaviorJumpUpdate();
 
 }
-
-void Player::OnCollision()
-{
-	isDead_ = true;
-
-}
-
-void Player::Draw(const ViewProjection& viewProjection) 
-{
-	if (isDead_ == false) {
-		models_[0]->Draw(worldTransformBody_, viewProjection);
-		models_[1]->Draw(worldTransformHead_, viewProjection);
-		models_[2]->Draw(worldTransformL_arm_, viewProjection);
-		models_[3]->Draw(worldTransformR_arm_, viewProjection);
-
-	
-	}
-
-}
-
-
 
 void Player::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }
 
@@ -166,19 +192,49 @@ void Player::UpdateFloatingGimmick() {
 	//worldTransformBody_.translation_.y = std::sin(floatingParameter_) * floatingAmplitude;
 
 	// 腕の動き
-	worldTransformL_arm_.rotation_.x = std::sin(floatingParameter_) * 0.75f;
+	
+	worldTransformL_arm_.rotation_.x = std::sin(floatingParameter_) * -0.75f;
 	worldTransformR_arm_.rotation_.x = std::sin(floatingParameter_) * 0.75f;
 }
+
+void Player::OnCollision()
+{
+	isDead_ = true;
+
+}
+
+void Player::OnCollision2()
+{
+
+	isDead_ = false;
+
+}
+
+void Player::Draw(const ViewProjection& viewProjection) 
+{
+	if (isDead_ == false) {
+		models_[0]->Draw(worldTransformBody_, viewProjection);
+		models_[1]->Draw(worldTransformHead_, viewProjection);
+		models_[2]->Draw(worldTransformL_arm_, viewProjection);
+		models_[3]->Draw(worldTransformR_arm_, viewProjection);
+
+	
+	}
+
+}
+
+
+
 
 
 void Player::BehaviorRootInitialize() {
 
-	worldTransformL_arm_.rotation_.x = 0.0f;
-	worldTransformR_arm_.rotation_.x = 0.0f;
+	worldTransformL_arm_.rotation_.y = 0.0f;
+	worldTransformR_arm_.rotation_.y = 0.0f;
 	//worldTransformWeapon_.rotation_.x = 0.0f;
 
-	// 浮遊初期化
-	//InitializeFloatingGimmick();
+	
+	InitializeFloatingGimmick();
 
 	worldTransformBody_.Initialize();
 	worldTransformHead_.Initialize();
@@ -206,63 +262,82 @@ void Player::BehaviorRootUpdate() {
 		// 回転行列
 		Matrix4x4 rotateMatrix = MakeRotateMatrix(viewProjection_->rotation_);
 
-		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_A) {
 			// 振る舞いリセット
 			behaviorRequest_ = Behavior::jump;
 			//worldTransformWeapon_.rotation_.x = 1.0f;
 			//worldTransformWeapon_.translation_.y = 2.0f;
 			//worldTransformL_arm_.rotation_.x = 1.0f;
 			//worldTransformR_arm_.rotation_.x = 1.0f;
+
+
 		}
-
-		
 	}
-
-
+	UpdateFloatingGimmick();
 }
 
 #pragma region ジャンプ
 
 void Player::BehaviorJumpInitialize()
 {
-	
+
 	worldTransformBase_.translation_.y = 0;
-	worldTransformL_arm_.rotation_.x = 0;
-	worldTransformL_arm_.rotation_.y = 0;
+	//worldTransformL_arm_.translation_.x = 0;
+	//worldTransformR_arm_.translation_.x = 0;
 
 	//ジャンプ
-	const float kJumpFirstSpeed = 1.0f;
-	velocity_ = {0.0f, kJumpFirstSpeed, 0.0f};
+	const float kJumpFirstSpeed = 2.0f;
 
+	velocity_ = {0.0f, kJumpFirstSpeed, 0.0f};
 
 }
 
 
-void Player::BehaviorJumpUpdate() {
+void Player::BehaviorJumpUpdate() 
+{
+
 
 	XINPUT_STATE joyState;
+	Vector3 accelerationVector = {};
+	const float kGravityAcceleraration = -0.05f;
 
-	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
 
-			Add(worldTransform_.translation_, velocity_);
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) 
+	{
 
-			const float kGravityAcceleration = 0.05f;
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) 
+		{
 
-			Vector3 accelerarationVector = {0, -kGravityAcceleration, 0};
+			if (!this->isJampFlag_) {
 
-			Add(velocity_, accelerarationVector);
+				
+				//accelerationVector = {0, kGravityAcceleraration, 0};
+				this->isJampFlag_ = true;
+
+			}
+			
+		
+		
 		}
 
 
-		if (worldTransform_.translation_.x <= 0.0f) {
-			worldTransform_.translation_.x = 0;
-		}
-
-		behaviorRequest_ = Behavior::kRoot;
 	}
 
+	if (this->isJampFlag_) {
+
+		velocity_.y += kGravityAcceleraration;
+
+		worldTransformBase_.translation_ = Add(worldTransformBase_.translation_, velocity_);
 		
+		if (worldTransformBase_.translation_.y <= 0.0f) {
+
+			worldTransformBase_.translation_.y = 0;
+
+			behaviorRequest_ = Behavior::kRoot;
+		}
+	}	  
+
+
 }
 
 #pragma endregion

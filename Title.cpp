@@ -1,49 +1,41 @@
 ﻿#include "Title.h"
-#include "Input.h"
-#include "Model.h"
-#include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
-#include "GameScene.h"
-#include "Title.h"
-#include "player.h"
-
 
 Title::Title() {}
 
-Title::~Title()
-{
+Title::~Title() {
+
 	delete Sprite_;
 	delete GameoverSprite_;
-
 }
-
 
 void Title::Initialize() {
 
 	dxCommom_ = DirectXCommon::GetInstance();
-	
 	input_ = Input::GetInstance();
 
 	Start = TextureManager::Load("start.png");
+
+	
 	end = TextureManager::Load("gameover.png");
 
 	Sprite_ = Sprite::Create(Start, {0, 0});
 
-
+	
 }
 
+void Title::Update() {
 
-void Title::Update() 
-{
-
-	if (input_->TriggerKey(DIK_SPACE)) {
-		isSceneEnd = true;
+	XINPUT_STATE joyState;
+	// ゲームパッド状態取得
+	if (Input::GetInstance()->GetJoystickState(0, joyState))
+		if (joyState.Gamepad.wButtons == XINPUT_GAMEPAD_B) {
+			{
+				isSceneEnd = true;
+		}
 	}
 }
 
-void Title::Draw() 
-{
+void Title::Draw() {
 
 	ID3D12GraphicsCommandList* commandList = dxCommom_->GetCommandList();
 

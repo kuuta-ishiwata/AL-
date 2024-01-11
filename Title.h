@@ -2,15 +2,15 @@
 #include"Audio.h"
 #include"DirectXCommon.h"
 #include"Input.h"
-#include"Model.h"
 #include"Sprite.h"
 #include"ViewProjection.h"
 #include"WorldTransform.h"
 #include "Scene.h"
-
-
+#include "TextureManager.h"
 class Title {
 
+
+	public:
 	///< summary>
 	/// コンストラクタ
 	///< summary>
@@ -37,15 +37,16 @@ class Title {
 
 	void Draw();
 
-	void Reset();
-
 	bool IsSceneEnd() { return isSceneEnd; }
 
 	SceneType NextScene() { return SceneType::kGamePlay; }
 	SceneType NextScene2() { return SceneType::kTitle; }
 
+	void Reset();
 
-private: 
+
+
+private:
 	DirectXCommon* dxCommom_ = nullptr;
 
 	Input* input_ = nullptr;
@@ -53,9 +54,9 @@ private:
 
 	bool isSceneEnd = false;
 	bool isSceneEnd2 = false;
+	// bool isSceneEndGamePlay = false;
 
-	Title* titleScene = nullptr;
-	Title* sceneNo = nullptr;
+
 
 	bool isDead = false;
 

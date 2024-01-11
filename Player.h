@@ -38,7 +38,7 @@ public:
 	void UpdateFloatingGimmick();
 
 	// 浮遊ギミックの媒介変数
-	float floatingParameter_ = 0.0f;
+	float floatingParameter_ = 0.1f;
 	// 通常行動初期化
 	void BehaviorRootInitialize();
 	// 通常行動更新
@@ -49,6 +49,8 @@ public:
 	//void BehaviorAttackInitialize();
 	// 攻撃行動更新
 	//void BehaviorAttackUpdate();
+
+	
 
 	//ジャンプ初期化
 	void BehaviorJumpInitialize();
@@ -70,7 +72,7 @@ public:
 
 
 	void OnCollision();
-
+	void OnCollision2();
 
 
 private:
@@ -101,6 +103,8 @@ private:
 	bool isDead_ = false;
 
 	Vector3 velocity_ = {};
+
+	bool isJampFlag_ = false;
 
 };
 

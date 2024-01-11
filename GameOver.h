@@ -46,7 +46,7 @@ class GameOver {
 
 	// 次のシーン
 	SceneType NextScene() { return SceneType::kGameOver; }
-	void playerfalse();
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommom_ = nullptr;
