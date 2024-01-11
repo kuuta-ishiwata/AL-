@@ -112,6 +112,8 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
+    <ClCompile Include="GameClear.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MATHEX.cpp" />
@@ -119,6 +121,7 @@
     <ClCompile Include="RailCamera.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Skydome.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="WorldTransformEX.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +151,8 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FollowCamera.h" />
+    <ClInclude Include="GameClear.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="MATHEX.h" />
@@ -157,8 +162,10 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RailCamera.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="Title.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

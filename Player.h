@@ -5,11 +5,15 @@
 #include "Input.h"
 #include "BaseCharacter.h"
 #include <optional>
+#include "Enemy.h"
+
+
 
 class Player : public BaseCharacter {
 
 
 public:
+
 	Player();
 	~Player();
 
@@ -22,7 +26,7 @@ public:
 		viewProjection_ = viewprojection;
 	}
 
-	void Initialize(const std::vector<Model*>& models) override;
+	void Initialize(const std::vector<Model*>& playermodels) override;
 
 	void Update() override;
 
@@ -42,25 +46,37 @@ public:
 
 
 	// 攻撃行動初期化
-	void BehaviorAttackInitialize();
+	//void BehaviorAttackInitialize();
 	// 攻撃行動更新
-	void BehaviorAttackUpdate();
+	//void BehaviorAttackUpdate();
+
+	//ジャンプ初期化
+	void BehaviorJumpInitialize();
+
+	//ジャンプ更新
+	void BehaviorJumpUpdate();
 
 	// 振る舞い
 	enum class Behavior {
 		kRoot,  // 通常攻撃
-		kAttack // 攻撃中
+		//kAttack // 攻撃中
+		jump
 	};
 
 	// 振る舞い
-	Behavior behavior_ = Behavior::kRoot;
+	Behavior behavior_ = Behavior::jump;
 
 	std::optional<Behavior> behaviorRequest_ = std::nullopt;
+
+
+	void OnCollision();
+
+
 
 private:
 
 	// 武器モデル
-	WorldTransform worldTransformWeapon_;
+	//WorldTransform worldTransformWeapon_;
 
     WorldTransform worldTransformBase_;
 	WorldTransform worldTransformBody_;
@@ -81,9 +97,10 @@ private:
 
 	// カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
-	// 攻撃フレーム
-	int attackFrame;
 
+	bool isDead_ = false;
+
+	Vector3 velocity_ = {};
 
 };
 

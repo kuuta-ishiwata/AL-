@@ -3,12 +3,16 @@
 #include "Model.h"
 #include "BaseCharacter.h"
 #include <vector>
-
 #include <list>
+#include "Player.h"
 
 //GameSceneの前方宣言
 
 class GameScene;
+
+class Player;
+
+
 
 class Enemy : public BaseCharacter{
 
@@ -18,6 +22,7 @@ public:
 
 	
 	void SetViewProjection(const ViewProjection* viewprojection) {
+
 		viewprojection_ = viewprojection;
 	}
 
@@ -32,12 +37,21 @@ public:
 	void GetViewProjection(const ViewProjection* viewProjection) {
 		viewprojection_ = viewProjection;
 	}
+
+
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
+
+	void SetPlayer(Player* player) { player_ = player; }
+
 
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+
+
 private:
+
 
 	// ワールド変換データ
 	WorldTransform worldTransformBase_;
@@ -57,5 +71,9 @@ private:
 
 	
 	GameScene* gameScene_ = nullptr;
+
+    
+	Player* player_ = nullptr;
+
 
 };

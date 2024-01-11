@@ -6,6 +6,9 @@
 #include <iostream>
 #include <map>
 #include <variant>
+#include "Scene.h"
+#include "Title.h"
+
 
 GameScene::GameScene() {}
 
@@ -13,24 +16,28 @@ GameScene::~GameScene() {}
 
 void GameScene::CheckAllCollisions() 
 {
+
 	//対象Aと対象Bの座標
 	Vector3 posA, posB;
+
 	posA = player_->GetWorldPosition();
    
-
 	//自キャラ武器と敵キャラのあたり判定
 	for (std::unique_ptr<Enemy>& enemy : enemies)
 	{
 		posB = enemy->GetWorldPosition();
+		if (posA.z + 1.0f >= posB.z && posA.z <= posB.z + 1.0f) {
+			if (posA.y + 1.0f >= posB.y && posA.y <= posB.y + 1.0f) {
+				if (posA.x + 1.0f >= posB.x && posA.x <= posB.x + 1.0f)
+				{
 
-
-
-
+					player_->OnCollision();
+					count += 1;
+				}
+			}
+		}
 	}
 	
-
-
-
 }
 
 void GameScene::Initialize() {
@@ -58,25 +65,31 @@ void GameScene::Initialize() {
 	ground_ = std::make_unique<Ground>();
 
 	ground_->Initialize(groundModel_.get());
-
+	
 
 	modelFighterHead_.reset(Model::CreateFromOBJ("float_Head", true));
 	modelFighterBody_.reset(Model::CreateFromOBJ("float_Body", true));
 	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
 	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
-	modelWeapon_.reset(Model::CreateFromOBJ("hammer", true));
+	//modelWeapon_.reset(Model::CreateFromOBJ("hammer", true));
 	
 	// 自キャラモデル
 	std::vector<Model*> playerModels = {
 	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
-	    modelFighterR_arm_.get(), modelWeapon_.get()};
+	    modelFighterR_arm_.get()};
 
 	player_ = std::make_unique<Player>();
 
 	player_->Initialize(playerModels);
 
-
 	
+
+	//enemy_ = new Enemy();
+	//
+	//enemy_->SetGameScene(this);
+	//
+	//enemy_->SetPlayer(player);
+
 
 	// 敵のモデル
 	enemyFighterBody_.reset(Model::CreateFromOBJ("needle_Body", true));
@@ -108,6 +121,8 @@ void GameScene::Initialize() {
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	
+	
+
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 軸方向表示を有効にする
@@ -170,7 +185,7 @@ void GameScene::Update() {
 	//player
 	player_->Update();
 
-	//enemy
+	
 	//enemies->Update();
 	//  敵の発生と更新
 	UpdateEnemyPopCommands();
@@ -186,7 +201,21 @@ void GameScene::Update() {
 		return false;
 	});
 
+	CheckAllCollisions();
+
 	worldTransform_.UpdateMatrix();
+
+	//if (count == 1) {
+	//
+	//	isSceneEnd = true;
+	//}
+	//
+	//if (count2 >= 11) {
+	//
+	//	isSceneEnd2 = true;
+	//}
+
+
 }
 
 void GameScene::Draw() {
@@ -222,9 +251,13 @@ void GameScene::Draw() {
 
 	player_->Draw(viewProjection_);
 
+
+
 	//enemies->Draw(viewProjection_);
 
-	for (std::unique_ptr<Enemy>& enemy : enemies) {
+	for (std::unique_ptr<Enemy>& enemy : enemies) 
+	{
+		
 		enemy->Draw(viewProjection_);
 	}
 
@@ -245,6 +278,40 @@ void GameScene::Draw() {
 
 #pragma endregion
 }
+
+/*
+void GameScene::Reset() {
+
+	isSceneEnd = false;
+
+	count2 = 0;
+
+
+	//player_->Initialize(const std::vector<Model*>& models);
+
+	// if (isSceneEnd) {
+	//	return;
+	// }
+
+	enemies.clear();
+	
+	enemyPopCommands.clear();
+	LoadEnemyPopData();
+	return;
+
+	
+}
+
+void GameScene::Reset2() {
+
+	isSceneEnd2 = false;
+
+	count = 0;
+}
+
+void GameScene::Restart() {}
+*/
+
 
 void GameScene::LoadEnemyPopData()
 {
@@ -330,19 +397,26 @@ void GameScene::EnemyPop(Vector3 pos)
 {
 	//敵キャラ初期化
 	std::vector<Model*> enemyModels = { 
-		modelFighterBody_.get(),
-	    modelFighterBody_.get(),
-	    modelFighterBody_.get(),
-	    modelFighterBody_.get(),
-
+		enemyFighterBody_.get(),
+		enemyFighterHead_.get(),
+		enemyFighterL_arm_.get(),
+		enemyFighterR_arm_.get(),
 	};
 
 	//敵の生成
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 
 	//初期化
-	newEnemy->Initialize(enemyModels);
+
+	//std::unique_ptr<Player> newplayer = std::make_unique<Player>();
+
+	newEnemy->SetPlayer(player_.get());
 	
+	newEnemy->SetGameScene(this);
+	
+	newEnemy->Initialize(enemyModels);
+
+
 	//リストに敵を登録
 	enemies.push_back(std::move(newEnemy));
 
@@ -353,7 +427,6 @@ void GameScene::EnemyPop(Vector3 pos)
 		//各セッターに値を代入
 		SetEnemyPopPos(pos);
 		enemy->GetViewProjection(&followCamera_->GetViewProjection());
-		enemy->SetGameScene(this);
 
 		//更新
 		enemy->Update();

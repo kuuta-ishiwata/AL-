@@ -11,11 +11,16 @@
 #include  "DebugCamera.h"
 #include "FollowCamera.h"
 #include "Model.h"
+#include "BaseCharacter.h"
 #include "Skydome.h"
 #include "Ground.h"
 #include "Player.h"
 #include "MATHEX.h"
 #include "Enemy.h"
+#include "Scene.h"
+#include "GameOver.h"
+#include "Title.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -51,6 +56,7 @@ public: // メンバ関数
 	
 	// 敵発生関数
 	/// </summary>
+
 	void EnemyPop(Vector3 pos);
 	void LoadEnemyPopData();
 	void UpdateEnemyPopCommands();
@@ -60,7 +66,33 @@ public: // メンバ関数
 	// 衝突判定
 	void CheckAllCollisions();
 
-private: // メンバ変数
+	//void Restart();
+	//
+	//void Reset();
+	//void Reset2();
+	//bool IsSceneEnd() { return isSceneEnd; }
+	//bool IsSceneEnd2() { return isSceneEnd2; }
+	//
+	//SceneType NextScene() {
+	//
+	//	// ゲームクリアとゲームオーバーどっちかに行く可能性があるので
+	//	// if文で戻り値を変える
+	//
+	//	if (isSceneEnd == true) {
+	//
+	//		return SceneType::kGameOver;
+	//	}
+	//
+	//	if (isSceneEnd2 == true) {
+	//
+	//		return SceneType::kGameClear;
+	//	}
+	//}
+
+	
+private: 
+
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -70,6 +102,7 @@ private: // メンバ変数
 	/// </summary>
 	/// 
 	
+
 	Model* model_;
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
@@ -95,6 +128,8 @@ private: // メンバ変数
 
 	std::unique_ptr<Player> player_;
 
+	
+
 	// 3Dモデル
 	std::unique_ptr<Model> modelFighterBody_;
 	std::unique_ptr<Model> modelFighterHead_;
@@ -111,8 +146,9 @@ private: // メンバ変数
 	std::unique_ptr<Model> enemyFighterHead_;
 	std::unique_ptr<Model> enemyFighterL_arm_;
 	std::unique_ptr<Model> enemyFighterR_arm_;
+
 	//武器モデル
-	std::unique_ptr<Model> modelWeapon_;
+	//std::unique_ptr<Model> modelWeapon_;
 
 	bool isWait = true;
 
@@ -120,6 +156,21 @@ private: // メンバ変数
 	int32_t waitTimer = 0;
 	std::stringstream enemyPopCommands;
 	Vector3 enemyPopPos = {};
+
+
+	bool isSceneEnd = false;
+	bool isSceneEndGameClear = false;
+	bool isSceneEndGameOver = false;
+
+	bool isSceneEnd2 = false;
+	Sprite* GameoverSprite_ = nullptr;
+
+	Player* Restartplayer = nullptr;
+
+	uint32_t count = 0;
+	uint32_t count2 = 0;
+
+	Enemy* enemy_ = nullptr;
 
 	
 
