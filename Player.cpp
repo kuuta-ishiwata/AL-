@@ -6,14 +6,9 @@
 #include "math.h"
 #include <memory>
 
-
-
 Player::Player() {}
 
 Player::~Player() {}
-
-
-
 
 
 void Player::Initialize(const std::vector<Model*>& playermodels) 
@@ -199,6 +194,7 @@ void Player::UpdateFloatingGimmick() {
 
 void Player::OnCollision()
 {
+
 	isDead_ = true;
 
 }

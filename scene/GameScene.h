@@ -177,4 +177,7 @@ private:
 
 	
 
+	Sprite* fadeSprite_ = nullptr;
+	Vector4 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+
 };

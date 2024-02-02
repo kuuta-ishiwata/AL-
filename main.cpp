@@ -119,11 +119,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				gameScene->Reset2();
 			}
 
-			if (gameScene->IsSceneEnd2() == true) {
+			if (gameScene->IsSceneEnd2() == true)
+			{
 
 				sceneNo = gameClear->NextScene();
 				gameScene->Reset();
 				gameScene->Reset2();
+
 			}
 
 			break;

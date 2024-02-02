@@ -1,4 +1,5 @@
 ﻿#include "Title.h"
+#include "time.h"
 
 Title::Title() {}
 
@@ -10,29 +11,56 @@ Title::~Title() {
 
 void Title::Initialize() {
 
+
 	dxCommom_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 
 	Start = TextureManager::Load("start.png");
 
+	Dodge = TextureManager::Load("mozi.png");
 	
 	end = TextureManager::Load("gameover.png");
 
+
 	Sprite_ = Sprite::Create(Start, {0, 0});
+
+	Dodgeaprite = Sprite::Create(Dodge, {100, -200});
+
+
+	Dodgeaprite->SetPosition(position_);
+
+	position_ = {100, -200};
 
 	
 }
 
-void Title::Update() {
+void Title::Update()
+{
+
+	if (position_.y <= 50)
+	{
+	
+		position_.y += speed_;
+		Dodgeaprite->SetPosition(position_);
+
+	}
+
 
 	XINPUT_STATE joyState;
-	// ゲームパッド状態取得
-	if (Input::GetInstance()->GetJoystickState(0, joyState))
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
-			{
+	    // ゲームパッド状態取得
+		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+			 {
+			if (position_.y >= 50)
+			 {
 				isSceneEnd = true;
+			 }
+			}
+
 		}
-	}
+	
+
 }
 
 void Title::Draw() {
@@ -43,9 +71,21 @@ void Title::Draw() {
 
 	Sprite_->Draw();
 
+	Dodgeaprite->Draw();
+	
+
 	Sprite::PostDraw();
 
 	dxCommom_->ClearDepthBuffer();
+
 }
 
-void Title::Reset() { isSceneEnd = false; }
+
+void Title::Reset() 
+{  
+	position_ = {100, -200};
+
+	Dodgeaprite = Sprite::Create(Dodge, {100, -200});
+	isSceneEnd = false;
+	Dodgeaprite->SetPosition(position_);
+}

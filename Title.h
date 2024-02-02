@@ -37,6 +37,7 @@ class Title {
 
 	void Draw();
 
+
 	bool IsSceneEnd() { return isSceneEnd; }
 
 	SceneType NextScene() { return SceneType::kGamePlay; }
@@ -47,6 +48,7 @@ class Title {
 
 
 private:
+
 	DirectXCommon* dxCommom_ = nullptr;
 
 	Input* input_ = nullptr;
@@ -68,7 +70,17 @@ private:
 	Sprite* Sprite_ = nullptr;
 	Sprite* GameoverSprite_ = nullptr;
 
+	uint32_t Dodge = 0u;
+	Sprite* Dodgeaprite = nullptr;
 
+	Vector2 position_ = {100, -200};
+	float speed_ = 2.0f;
 
+	
+	uint32_t button = 0u;
+	Sprite* ButtonSprite_ = nullptr;
+
+	Vector2 ButtonPosiiton_ = {50, 50};
+	
 
 };

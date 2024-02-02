@@ -64,5 +64,7 @@ private: // メンバ変数
 
 	Sprite* GameoverSprite_ = nullptr;
 
+	Sprite* fadeSprite_ = nullptr;
+	Vector4 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
 
 };

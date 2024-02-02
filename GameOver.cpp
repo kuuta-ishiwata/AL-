@@ -15,6 +15,8 @@ GameOver::~GameOver() { delete GameoverSprite_; }
 
 void GameOver::Initialize() {
 
+
+
 	dxCommom_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 
@@ -22,10 +24,16 @@ void GameOver::Initialize() {
 
 	GameoverSprite_ = Sprite::Create(end, {0, 0});
 
+	uint32_t fadeTextureHandle = TextureManager::Load("fade.png");
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
+
 }
 
-void GameOver::Update() {
+void GameOver::Update() 
+{
 
+	fadeColor.w -= 0.0020f;
+	fadeSprite_->SetColor(fadeColor);
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
@@ -37,11 +45,12 @@ void GameOver::Update() {
 
 void GameOver::Reset()
 {
+
 	isSceneEnd = false;
+
 }
 
 void GameOver::Draw() 
-
 {
 
 	ID3D12GraphicsCommandList* commandList = dxCommom_->GetCommandList();
@@ -49,6 +58,7 @@ void GameOver::Draw()
 	Sprite::PreDraw(commandList);
 
 	GameoverSprite_->Draw();
+	fadeSprite_->Draw();
 
 	Sprite::PostDraw();
 

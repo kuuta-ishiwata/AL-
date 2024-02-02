@@ -26,9 +26,9 @@ void GameScene::CheckAllCollisions()
 	for (std::unique_ptr<Enemy>& enemy : enemies)
 	{
 		posB = enemy->GetWorldPosition();
-		if (posA.z + 2.0f >= posB.z && posA.z <= posB.z + 2.0f) {
-			if (posA.y +2.0f >= posB.y && posA.y <= posB.y + 2.0f) {
-				if (posA.x + 2.0f >= posB.x && posA.x <= posB.x + 2.0f)
+		if (posA.z + 1.0f >= posB.z && posA.z <= posB.z + 1.0f) {
+			if (posA.y +1.0f >= posB.y && posA.y <= posB.y + 1.0f) {
+				if (posA.x + 1.0f >= posB.x && posA.x <= posB.x + 1.0f)
 				{
 
 					count += 1;
@@ -71,7 +71,7 @@ void GameScene::Initialize() {
 	modelFighterBody_.reset(Model::CreateFromOBJ("float_Body", true));
 	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
 	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
-	//modelWeapon_.reset(Model::CreateFromOBJ("hammer", true));
+	
 	
 	// 自キャラモデル
 	std::vector<Model*> playerModels = {
@@ -84,11 +84,10 @@ void GameScene::Initialize() {
 
 	
 
-
 	// 敵のモデル
 	enemyFighterBody_.reset(Model::CreateFromOBJ("needle_Body", true));
-	enemyFighterL_arm_.reset(Model::CreateFromOBJ("needle_L_arm", true));
-	enemyFighterR_arm_.reset(Model::CreateFromOBJ("needle_R_arm", true));
+	//enemyFighterL_arm_.reset(Model::CreateFromOBJ("needle_L_arm", true));
+	//enemyFighterR_arm_.reset(Model::CreateFromOBJ("needle_R_arm", true));
 
 	
 
@@ -96,7 +95,6 @@ void GameScene::Initialize() {
 
 	UpdateEnemyPopCommands();
 
-	
 
 	// フォローカメラ
 	followCamera_ = std::make_unique<FollowCamera>();
@@ -107,8 +105,9 @@ void GameScene::Initialize() {
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	
+	uint32_t fadeTextureHandle = TextureManager::Load("fade.png");
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1,1,1,1});
 	
-
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 	// 軸方向表示を有効にする
@@ -121,6 +120,7 @@ void GameScene::Update() {
 	worldTransform_.TransferMatrix();
 	viewProjection_.UpdateMatrix();
 
+	
 	if (input_->TriggerKey(DIK_K) == isDebugCameraActive_ == false) {
 		isDebugCameraActive_ = true;
 
@@ -153,13 +153,16 @@ void GameScene::Update() {
 
 		viewProjection_.matView = followCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
-// viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		// viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
 		
 
 		// ビュープロジェクション行列の更新と転送
 		viewProjection_.TransferMatrix();
+
 	}
+
+	fadeColor.w -= 0.0020f;
+	fadeSprite_->SetColor(fadeColor);
 
 	// 天球
 	skydome_->Update();
@@ -220,7 +223,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -234,6 +237,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	
 
 	ground_->Draw(viewProjection_);
 
@@ -258,6 +263,7 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+	 fadeSprite_->Draw();
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
@@ -286,10 +292,11 @@ void GameScene::Reset()
 
 	player_->OnCollision2();
 	
+
 	 if (isSceneEnd) {
 		return;
 	 }
-
+	
 	enemies.clear();
 	
 	enemyPopCommands.clear();
