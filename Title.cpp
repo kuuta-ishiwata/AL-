@@ -57,8 +57,7 @@ void Title::Update()
 			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 			 {
 
-			if (position_.y >= 50)
-			 
+			 if (position_.y >= 50)
 			 {
 				isSceneEnd = true;
 			 }

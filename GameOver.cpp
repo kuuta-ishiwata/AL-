@@ -27,12 +27,17 @@ void GameOver::Initialize() {
 
 	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
 
+	
+
+
 }
 
 void GameOver::Update() 
 {
 
-	fadeColor.w -= 0.020f;
+	
+
+	fadeColor.w -= 0.006f;
 	fadeSprite_->SetColor(fadeColor);
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {

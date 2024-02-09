@@ -26,11 +26,11 @@ void GameScene::CheckAllCollisions()
 	for (std::unique_ptr<Enemy>& enemy : enemies)
 	{
 		posB = enemy->GetWorldPosition();
-		if (posA.z + 1.0f >= posB.z && posA.z <= posB.z + 1.0f) {
-			if (posA.y +1.0f >= posB.y && posA.y <= posB.y + 1.0f) {
-				if (posA.x + 1.0f >= posB.x && posA.x <= posB.x + 1.0f)
+		if (posA.z + 2.0f >= posB.z && posA.z <= posB.z + 2.0f) {
+			if (posA.y +2.0f >= posB.y && posA.y <= posB.y + 2.0f) {
+				if (posA.x + 2.0f >= posB.x && posA.x <= posB.x + 2.0f)
 				{
-					count += 1;
+					count ++;
 				}
 			}
 		}
@@ -65,6 +65,15 @@ void GameScene::Initialize() {
 	ground_->Initialize(groundModel_.get());
 	
 
+	fadeTextureHandle = TextureManager::Load("fade.png");
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
+
+	
+	fadeTextureHandle2 = TextureManager::Load("fade.png");
+	fadeSprite2_ = Sprite::Create(fadeTextureHandle, {0, 0}, {0, 0, 0, 0});
+
+	
+
 	modelFighterHead_.reset(Model::CreateFromOBJ("float_Head", true));
 	modelFighterBody_.reset(Model::CreateFromOBJ("float_Body", true));
 	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
@@ -88,6 +97,7 @@ void GameScene::Initialize() {
 	//enemyFighterR_arm_.reset(Model::CreateFromOBJ("needle_R_arm", true));
 
 	
+	
 
 	LoadEnemyPopData();
 
@@ -102,9 +112,6 @@ void GameScene::Initialize() {
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
-	
-	fadeTextureHandle = TextureManager::Load("fade.png");
-	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1,1,1,1});
 	
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -159,8 +166,10 @@ void GameScene::Update() {
 
 	}
 
+
 	fadeColor.w -= 0.003f;
 	fadeSprite_->SetColor(fadeColor);
+
 
 	// 天球
 	skydome_->Update();
@@ -193,20 +202,39 @@ void GameScene::Update() {
 
 	count2++;
 
-	if (count == 1) {
-	
-		isSceneEnd = true;
-		player_->OnCollision();
 
+	if (count >= 1) 
+	{
+
+		player_->OnCollision();
+		fadeColor2.w += 0.005f;
+		fadeSprite2_->SetColor(fadeColor2);
+		
 	}
 
-	
-	
 
-	if (count2 >= 3000) {
+	if (fadeColor2.w >= 1.0f)
+	{
+
+		isSceneEnd = true;
 	
+	}
+
+
+
+	if (count2 >= 2000) 
+	{
+	
+		fadeColor2.w += 0.006f;
+		fadeSprite2_->SetColor(fadeColor2);
+		
+	}
+
+	if (fadeColor2.w >= 1.0f)
+	{
 		isSceneEnd2 = true;
 		count2 = 0;
+
 	}
 
 
@@ -264,8 +292,11 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
-	 fadeSprite_->Draw();
 
+	fadeSprite_->Draw();
+	
+	fadeSprite2_->Draw();
+	
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
@@ -287,6 +318,9 @@ void GameScene::Reset()
 	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
 	fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
 
+
+	fadeSprite2_ = Sprite::Create(fadeTextureHandle, {0, 0}, {0, 0, 0, 0});
+	fadeColor2 = {0.0f, 0.0f, 0.0f, 0.0f};
 
 	std::vector<Model*> playerModels = {
 	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
@@ -324,6 +358,8 @@ void GameScene::Reset2() {
 	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
 	fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
 
+	fadeSprite2_ = Sprite::Create(fadeTextureHandle, {0, 0}, {0, 0, 0, 0});
+	fadeColor2 = {0.0f, 0.0f, 0.0f, 0.0f};
 
 }
 

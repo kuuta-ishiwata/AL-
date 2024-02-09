@@ -76,7 +76,7 @@ void Enemy::Update()
 	 Vector3 Result =
 	 {
 
-	     playerpos.x - enemypos.x, playerpos.y - enemypos.y, playerpos.z - enemypos.z
+	     playerpos.x - enemypos.x, playerpos.y - enemypos.y, playerpos.z - enemypos.z -7.5f
 
 	 };
 	 
@@ -84,7 +84,9 @@ void Enemy::Update()
 	 
 	 velocity = 
 	 {
-	     ResultNomalize.x * velocity.x, ResultNomalize.y * velocity.y, ResultNomalize.z * velocity.z
+
+	     ResultNomalize.x * velocity.x, ResultNomalize.y * velocity.y, ResultNomalize.z * velocity.z 
+
 	 };
 
 

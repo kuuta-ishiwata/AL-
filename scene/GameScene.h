@@ -179,5 +179,12 @@ private:
 	uint32_t fadeTextureHandle = 0u; 
 	Sprite* fadeSprite_ = nullptr;
 	Vector4 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+	
+	Vector4 fadeColor2 = {0.0f, 0.0f, 0.0f, 0.0f};
+	uint32_t fadeTextureHandle2 = 0u;
+	Sprite* fadeSprite2_ = nullptr;
+
+	
+
 
 };
