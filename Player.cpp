@@ -37,17 +37,21 @@ void Player::Initialize(const std::vector<Model*>& playermodels)
 
 	// X,Y,Z方向のスケーリングを設定
 	//worldTransformBase_.scale_ = {1.0f, 1.0f, 1.0f};
+
 	worldTransformBase_.translation_ = {30.0f, 0.0f, -10.0f};
 
 	#pragma region モデルの設定
 
 	// 腕の座標指定
 
-	worldTransformHead_.translation_.y = 1.5f;
-	worldTransformL_arm_.translation_.x = -0.5f;
-	worldTransformR_arm_.translation_.x = 0.5f;
-	worldTransformL_arm_.translation_.y = 1.3f;
-	worldTransformR_arm_.translation_.y = 1.3f;
+	worldTransformHead_.translation_.y = 0.1f;
+	worldTransformBody_.translation_.y = 0.7f;
+	worldTransformL_arm_.translation_.x = -1.5f;
+	worldTransformR_arm_.translation_.x = 1.3f;
+	worldTransformL_arm_.translation_.y = 0.5f;
+	worldTransformR_arm_.translation_.y = 0.6f;
+
+	//worldTransformL_arm_.rotation_.y = 2.0f;
 	
 #pragma endregion
 

@@ -31,11 +31,15 @@ void Title::Initialize() {
 
 	position_ = {100, -200};
 
+	fadeTextureHandle = TextureManager::Load("fade.png");
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
 	
 }
 
 void Title::Update()
 {
+	fadeColor.w -= 0.020f;
+	fadeSprite_->SetColor(fadeColor);
 
 	if (position_.y <= 50)
 	{
@@ -48,16 +52,18 @@ void Title::Update()
 
 	XINPUT_STATE joyState;
 	    // ゲームパッド状態取得
-		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
-
+		if (Input::GetInstance()->GetJoystickState(0, joyState)) 
+		{
 			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 			 {
+
 			if (position_.y >= 50)
+			 
 			 {
 				isSceneEnd = true;
 			 }
-			}
 
+			}
 		}
 	
 
@@ -72,7 +78,7 @@ void Title::Draw() {
 	Sprite_->Draw();
 
 	Dodgeaprite->Draw();
-	
+	fadeSprite_->Draw();
 
 	Sprite::PostDraw();
 
@@ -88,4 +94,7 @@ void Title::Reset()
 	Dodgeaprite = Sprite::Create(Dodge, {100, -200});
 	isSceneEnd = false;
 	Dodgeaprite->SetPosition(position_);
+
+	 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
 }

@@ -6,6 +6,7 @@
 #include <list>
 #include "Player.h"
 
+
 //GameSceneの前方宣言
 
 class GameScene;
@@ -74,6 +75,8 @@ private:
 
     
 	Player* player_ = nullptr;
+
+	
 
 
 };

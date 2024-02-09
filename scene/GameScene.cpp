@@ -30,9 +30,7 @@ void GameScene::CheckAllCollisions()
 			if (posA.y +1.0f >= posB.y && posA.y <= posB.y + 1.0f) {
 				if (posA.x + 1.0f >= posB.x && posA.x <= posB.x + 1.0f)
 				{
-
 					count += 1;
-
 				}
 			}
 		}
@@ -105,7 +103,7 @@ void GameScene::Initialize() {
 	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	
-	uint32_t fadeTextureHandle = TextureManager::Load("fade.png");
+	fadeTextureHandle = TextureManager::Load("fade.png");
 	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1,1,1,1});
 	
 	// デバッグカメラの生成
@@ -161,7 +159,7 @@ void GameScene::Update() {
 
 	}
 
-	fadeColor.w -= 0.0020f;
+	fadeColor.w -= 0.003f;
 	fadeSprite_->SetColor(fadeColor);
 
 	// 天球
@@ -199,7 +197,10 @@ void GameScene::Update() {
 	
 		isSceneEnd = true;
 		player_->OnCollision();
+
 	}
+
+	
 	
 
 	if (count2 >= 3000) {
@@ -283,6 +284,10 @@ void GameScene::Reset()
 
 	count2 = 0;
 
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
+	fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+
+
 	std::vector<Model*> playerModels = {
 	    modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
 	    modelFighterR_arm_.get()};
@@ -301,6 +306,10 @@ void GameScene::Reset()
 	
 	enemyPopCommands.clear();
 	LoadEnemyPopData();
+
+	
+	
+
 	return;
 
 	
@@ -311,6 +320,11 @@ void GameScene::Reset2() {
 	isSceneEnd2 = false;
 
 	count = 0;
+
+	fadeSprite_ = Sprite::Create(fadeTextureHandle, {0, 0}, {1, 1, 1, 1});
+	fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+
+
 }
 
 void GameScene::Restart() {}

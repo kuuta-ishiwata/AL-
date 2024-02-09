@@ -81,6 +81,9 @@ private:
 	Sprite* ButtonSprite_ = nullptr;
 
 	Vector2 ButtonPosiiton_ = {50, 50};
-	
+
+	Sprite* fadeSprite_ = nullptr;
+	Vector4 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
+	uint32_t fadeTextureHandle = 0u;
 
 };

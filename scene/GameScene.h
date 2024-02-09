@@ -176,7 +176,7 @@ private:
 	Enemy* enemy_ = nullptr;
 
 	
-
+	uint32_t fadeTextureHandle = 0u; 
 	Sprite* fadeSprite_ = nullptr;
 	Vector4 fadeColor = {1.0f, 1.0f, 1.0f, 1.0f};
 
